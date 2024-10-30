@@ -66,8 +66,17 @@ services:
     volumes:
       - /sessions
       - ${PHP_INI-./config/php/php.ini}:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
-  redis:
-    container_name: "${COMPOSE_PROJECT_NAME}-redis"
-    image: redis:latest
+  # redis:
+  #   container_name: "${COMPOSE_PROJECT_NAME}-redis"
+  #   image: redis:latest
+  #   ports:
+  #     - "127.0.0.1:${HOST_MACHINE_REDIS_PORT}:6379"
+meilisearch:
+    container_name: "${COMPOSE_PROJECT_NAME}-meilisearch"
+    image: getmeili/meilisearch:latest
     ports:
-      - "127.0.0.1:${HOST_MACHINE_REDIS_PORT}:6379"
+      - "127.0.0.1:${HOST_MACHINE_MEILISEARCH_PORT}:7700"
+    environment:
+      MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
+    volumes:
+      - ${MEILISEARCH_DATA_DIR-./data/meilisearch}:/meili_data
